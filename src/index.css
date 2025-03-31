@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Vectora LT Std';
+  src: url('https://db.onlinewebfonts.com/t/0c3493f63bc3d63cc02d3179d75d1e85.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Vectora LT Std';
+  src: url('https://db.onlinewebfonts.com/t/0de5c118440c97f47d6c16e6b6a0156c.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@layer base {
+  body {
+    @apply bg-[#FFFFFE] text-black font-normal;
+    font-family: 'Vectora LT Std', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+    font-family: 'Vectora LT Std', sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[#7BE42F] text-black px-6 py-3 rounded-[28px] font-bold hover:opacity-90 transition-opacity;
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#6AB235];
+  }
+}
