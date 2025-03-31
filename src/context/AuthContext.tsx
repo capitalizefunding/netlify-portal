@@ -76,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           company_name: companyName.trim(),
           phone: phone.trim()
         },
+        emailRedirectTo: `${window.location.origin}/login`,
       },
     });
 
@@ -89,6 +90,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!data.user) {
       throw new Error('Registration failed. Please try again.');
     }
+
+    // Show confirmation message since the user needs to verify their email
+    throw new Error('Please check your email to confirm your account before logging in.');
   };
 
   const logout = async () => {

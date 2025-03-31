@@ -11,6 +11,7 @@ export default function Register() {
   const [companyName, setCompanyName] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -18,14 +19,21 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccess(null);
     setIsLoading(true);
 
     try {
       await register(email, password, firstName, lastName, companyName, phone);
-      navigate('/dashboard');
+      setSuccess('Registration successful! Please check your email to confirm your account.');
+      // Don't navigate immediately - let user see the success message
     } catch (error) {
       console.error('Registration failed:', error);
-      setError(error instanceof Error ? error.message : 'Failed to create account. Please try again.');
+      const message = error instanceof Error ? error.message : 'Failed to create account. Please try again.';
+      if (message.includes('Please check your email')) {
+        setSuccess(message);
+      } else {
+        setError(message);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -45,6 +53,12 @@ export default function Register() {
         {error && (
           <div className="p-4 bg-red-50 text-red-700 rounded-lg text-sm">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="p-4 bg-green-50 text-green-700 rounded-lg text-sm">
+            {success}
           </div>
         )}
 
@@ -146,13 +160,15 @@ export default function Register() {
             <button
               type="submit"
               className="btn-primary w-full relative"
-              disabled={isLoading}
+              disabled={isLoading || success !== null}
             >
               {isLoading ? (
                 <span className="flex items-center justify-center">
                   <span className="animate-spin h-5 w-5 mr-3 border-2 border-black border-t-transparent rounded-full"></span>
                   Creating account...
                 </span>
+              ) : success ? (
+                'Check your email'
               ) : (
                 'Create Account'
               )}
